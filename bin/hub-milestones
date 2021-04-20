@@ -1,10 +1,19 @@
 #!/bin/bash
-# Usage: hub-milestones
+# Usage: hub-milestones [<REPO-NAME>]
 #
-# List the open milestones for the current repository.
+# List the open milestones for the current or supplied repository.
 #
 # Author: @mislav
 set -e
+
+if [[ $1 == *"-h"* ]] ; then
+    cat <<- EOF
+	Usage: hub-milestones [<REPO-NAME>]
+	
+	List the open milestones for the current or supplied repository.
+EOF
+exit 1
+fi
 
 milestones() {
   hub api --paginate graphql "$@" -f query='
@@ -25,4 +34,10 @@ milestones() {
   ' | jq -r '.data.repository.milestones.nodes[] | [.number,.title] | @tsv'
 }
 
-milestones "$@"
+if [ -n "$1" ] ; then
+    repo_name="$@"
+else
+    repo_name="$(basename $PWD)"
+fi
+
+milestones "$repo_name"

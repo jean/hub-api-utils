@@ -5,6 +5,16 @@
 # Creates a new GitHub repository based on a repository template.
 set -euo pipefail
 
+if [ $# -le 1 ] || [[ $1 == *"-h"* ]] ; then
+    cat <<- EOF
+    Usage: hub-create-from-template <TEMPLATE-REPO> [<ORG>/]<REPO-NAME> [--public]
+           git clone \`hub-create-from-template <args...>\`
+    
+    Creates a new GitHub repository based on a repository template.
+EOF
+exit 1
+fi
+
 TEMPLATE_REPO=
 REPO_OWNER=
 REPO_NAME=

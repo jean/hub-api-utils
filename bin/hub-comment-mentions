@@ -8,6 +8,18 @@
 # Author: @mislav
 set -e
 
+if [[ $1 == *"-h"* ]] ; then
+    cat <<- EOF
+	Usage: $0
+	
+	Reads the text of a GitHub comment from standard input and extracts the names
+	of every person who would get subscribed to this thread via @-mentions. Needs
+	the \`org:read\` scope for looking up members of mentioned teams.
+EOF
+exit 1
+fi
+
+
 find_members() {
   local org="${1%/*}"
   local team="${1#*/}"

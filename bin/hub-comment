@@ -7,6 +7,16 @@
 # Author: @mislav
 set -e
 
+if [ $# -le 1 ] || [[ $1 == *"-h"* ]] ; then
+    cat <<- EOF
+	Usage: $0 <ISSUE-NUMBER> [<TEXT>]
+	
+	Creates a comment in the specified issue or pull request. If <TEXT> isn't
+	given as argument, it is read from standard input.
+EOF
+exit 1
+fi
+
 issue_number="${1?}"
 shift 1
 
